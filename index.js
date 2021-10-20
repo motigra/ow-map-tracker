@@ -4,7 +4,8 @@ const ip = require("ip");
 const config = require("./config.json");
 const maps = require('./maps.json').sort();
 const DB = require('./db');
-
+const QRCode = require('qrcode');
+ 
 (async () => {
 
     console.log(`Starting up... ${new Date().toISOString()}`);
@@ -12,8 +13,6 @@ const DB = require('./db');
     const db = new DB(config.dbFilePath);
 
     await db.load();
-
-    console.table(db.list());
 
     const app = express();
 
@@ -33,7 +32,7 @@ const DB = require('./db');
         
         try {
             req.body.timestamp = new Date(req.body.timestamp);
-            console.log(req.body);
+            //console.log(req.body);
             await db.add(req.body);
             res.sendStatus(200);
         }
@@ -46,6 +45,10 @@ const DB = require('./db');
 
     app.listen(config.port, () => {
         console.log(`Example app listening at http://${ip.address()}:${config.port}`);
+
+        QRCode.toString(`http://${ip.address()}:${config.port}`, { type:'terminal' }, function (err, url) {
+            console.log(url);
+        });
     });
 
 })();
