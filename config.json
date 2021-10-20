@@ -1,0 +1,4 @@
+{
+    "dbFilePath": "./db.csv",
+    "port": 3000
+}

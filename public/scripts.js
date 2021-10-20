@@ -1,17 +1,36 @@
 console.log('client application is running');
 
 document.addEventListener('DOMContentLoaded', async (event) => {
-
     const maps = await get('/maps');
-
     console.log(maps);
-
     renderButtons(maps);
-    
+    hideOverlay();
 });
 
-function buttonHandler(map) {
+function showOverlay() {
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function hideOverlay() {
+    document.getElementById('overlay').style.display = 'none';
+}
+
+async function buttonHandler(map) {
+    showOverlay();
     console.log(`clicked on ${map}`);
+    try {
+        const record = { map, timestamp: new Date() };
+        await post('/records', record);
+        console.log('record saved!');
+        setTimeout(() => {
+            hideOverlay();
+        }, 5000);
+    }
+    catch (e) {
+        console.error('failed to save record');
+        console.error(e);
+        hideOverlay();
+    }
 }
 
 function renderButtons(maps) {
@@ -39,8 +58,26 @@ function get(url) {
             catch (e) {
                 reject(e);
             }
-        }
+        };
         oReq.open("GET", url);
         oReq.send();
+    });
+}
+
+function post(url, body) {
+    return new Promise((resolve, reject) => {
+        var oReq = new XMLHttpRequest();
+        oReq.onload = (ev) => {
+            try {
+                console.log(oReq.response);
+                resolve();
+            }
+            catch (e) {
+                reject (e);
+            }
+        };
+        oReq.open("POST", url);
+        oReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        oReq.send(JSON.stringify(body));
     });
 }

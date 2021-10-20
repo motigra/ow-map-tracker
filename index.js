@@ -1,69 +1,15 @@
-const fs = require('fs').promises;
 const express = require('express');
-
-const config = {
-    dbFilePath: './db.csv',
-    port: 3000
-};
-
-const maps = [
-    'Blizzard World',
-    'Busan',
-    'Dorado',
-    'Eichenwalde',
-    'Hanamura',
-    'Havana',
-    'Hollywood',
-    'Horizon',
-    'Ilios',
-    'Junkertown',
-    'Kings Row',
-    'Lijiang Tower',
-    'Nepal',
-    'Numbani',
-    'Rialto',
-    'Volskaya',
-    'Watchpoint',
-    'Oasis',
-    'Paris',
-    'Route 66'
-].sort();
-
-class DB {
-
-    constructor() {
-        this.ready = false;
-        this._cache = [];
-    }
-
-    async load() {
-        const raw = await fs.readFile(config.dbFilePath, { encoding: 'utf8' });
-        this._cache = raw.split('\n').slice(1).filter(r => {
-            return r && r.trim().length > 0;
-        }).map(r => {
-            const cells = r.split(',');
-            return { timestamp: new Date(cells[0].trim()), map: cells[1].trim() };
-        });
-        this.ready = true;
-    }
-
-    list() {
-        return this._cache;
-    }
-
-    async add(record) {
-        this._cache.push(record);
-        await fs.appendFile(config.dbFilePath, `\n${record.timestamp.toISOString()},${record.map}`, { encoding: 'utf8' });
-    }
-}
-
-const db = new DB();
+const bodyParser = require('body-parser');
+const ip = require("ip");
+const config = require("./config.json");
+const maps = require('./maps.json').sort();
+const DB = require('./db');
 
 (async () => {
 
     console.log(`Starting up... ${new Date().toISOString()}`);
 
-    await ensureDbFileExists();
+    const db = new DB(config.dbFilePath);
 
     await db.load();
 
@@ -72,6 +18,7 @@ const db = new DB();
     const app = express();
 
     app.use(express.static('./public'));
+    app.use(bodyParser.json());
 
     app.get('/maps', (req, res) => {
         res.contentType('application/json');
@@ -82,21 +29,23 @@ const db = new DB();
         res.send(db.list());
     });
 
+    app.post('/records', async (req, res) => {
+        
+        try {
+            req.body.timestamp = new Date(req.body.timestamp);
+            console.log(req.body);
+            await db.add(req.body);
+            res.sendStatus(200);
+        }
+        catch (e) {
+            console.error(e);
+            res.sendStatus(400);
+        }
+
+    });
+
     app.listen(config.port, () => {
-        console.log(`Example app listening at http://localhost:${config.port}`);
+        console.log(`Example app listening at http://${ip.address()}:${config.port}`);
     });
 
 })();
-
-
-async function ensureDbFileExists() {
-    console.log('Ensuring DB file exists');
-    try {
-        await fs.access(config.dbFilePath);
-        console.log(`Found DB file at ${config.dbFilePath}`);
-    }
-    catch (e) {
-        await fs.writeFile(config.dbFilePath, 'date,map', { encoding: 'utf8' });
-        console.log(`Created new DB file at ${config.dbFilePath}`);
-    }
-}

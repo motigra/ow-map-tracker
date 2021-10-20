@@ -13,6 +13,5 @@ The UI is a simple web page that can be opened on your mobile device locally, an
 
 ## To Do
 
- - Lockout timer on UI to avoid misclick/duplication
  - Analytics
  - Algorithm to divide logs into sessions for analytics
