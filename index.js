@@ -28,6 +28,10 @@ const QRCode = require('qrcode');
         res.send(db.list());
     });
 
+    app.get('/records/recent', (req, res) => {
+        res.send(db.list().slice(db.size - 6));
+    });
+
     app.post('/records', async (req, res) => {
         
         try {

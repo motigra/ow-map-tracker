@@ -34,6 +34,10 @@ class DB {
         return this._cache;
     }
 
+    get size () {
+        return this._cache.length;
+    }
+
     async add(record) {
         this._cache.push(record);
         await fs.appendFile(this._dbFilePath, `\n${record.timestamp.toISOString()},${record.map}`, { encoding: 'utf8' });

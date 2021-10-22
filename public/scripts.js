@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     const maps = await get('/maps');
     console.log(maps);
     renderButtons(maps);
+    await getRecent();
     hideOverlay();
 
     const lockSwitch = document.getElementById('lockSwitch');
@@ -16,6 +17,24 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         }
     });
 });
+
+async function getRecent() {
+    const recent = await get('/records/recent');
+    recent.forEach(r => {
+        r.timestamp = new Date(r.timestamp);
+    });
+    recent.reverse();
+    console.log(recent);
+
+    const container = document.getElementById('recentContainer');
+    container.innerHTML = '';
+    recent.forEach(r => {
+        const row = document.createElement('tr');
+        row.setAttribute('class', 'recent-row');
+        row.innerHTML = `<td>${r.map}</td><td>${r.timestamp.toLocaleString()}</td>`;
+        container.appendChild(row);
+    });
+}
 
 function lockButtons() {
     Array.prototype.forEach.call(document.getElementsByClassName('button'), b => { b.disabled = true });
@@ -31,7 +50,18 @@ function showOverlay() {
 
 function hideOverlay() {
     document.getElementById('overlay').style.display = 'none';
+    document.getElementById('status-ok').style.display = 'none';
+    document.getElementById('status-error').style.display = 'none';
 }
+
+function showStatusOk() {
+    document.getElementById('status-ok').style.display = 'inline-block';
+}
+
+function showStatusError() {
+    document.getElementById('status-error').style.display = 'inline-block';
+}
+
 
 async function buttonHandler(map) {
     showOverlay();
@@ -39,16 +69,18 @@ async function buttonHandler(map) {
     try {
         const record = { map, timestamp: new Date() };
         await post('/records', record);
+        showStatusOk();
         console.log('record saved!');
-        setTimeout(() => {
-            hideOverlay();
-        }, 5000);
+        await getRecent();
     }
     catch (e) {
         console.error('failed to save record');
         console.error(e);
-        hideOverlay();
+        showStatusError();
     }
+    setTimeout(() => {
+        hideOverlay();
+    }, 5000);
 }
 
 function renderButtons(maps) {

@@ -41,8 +41,27 @@
     <div class="section buttons">
         <div id="buttonContainer" class="container flex-container"></div>
     </div>
+    <div class="section">
+        <div class="container">
+            <h5>Recent Maps:</h5>
+            <table class="u-full-width">
+                <thead>
+                  <tr>
+                    <th>Map</th>
+                    <th>Date/Time</th>
+                  </tr>
+                </thead>
+                <tbody id="recentContainer">
+                </tbody>
+              </table>
+        </div>
+    </div>
     <div class="overlay" id="overlay">
         <div class="lds-dual-ring"></div>
+        <div class="status-container">
+            <i id="status-ok" class="icon check"></i>
+            <i id="status-error" class="icon error"></i>
+        </div>
     </div>
     <script src="/scripts.js"></script>
 </body>
