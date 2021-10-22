@@ -148,7 +148,7 @@
   /* Bigger than 1000 */
   @media (min-width: 1000px) {
     .section {
-      padding: 20rem 0 19rem;
+      padding: 8rem 0 8rem;
     }
     .hero {
       padding: 22rem 0;
