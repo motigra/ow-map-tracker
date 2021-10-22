@@ -5,7 +5,25 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     console.log(maps);
     renderButtons(maps);
     hideOverlay();
+
+    const lockSwitch = document.getElementById('lockSwitch');
+    lockSwitch.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            lockButtons();
+        }
+        else {
+            unlockButtons();
+        }
+    });
 });
+
+function lockButtons() {
+    Array.prototype.forEach.call(document.getElementsByClassName('button'), b => { b.disabled = true });
+}
+
+function unlockButtons() {
+    Array.prototype.forEach.call(document.getElementsByClassName('button'), b => { b.disabled = false });
+}
 
 function showOverlay() {
     document.getElementById('overlay').style.display = 'block';
