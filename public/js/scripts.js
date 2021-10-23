@@ -1,4 +1,5 @@
 import * as xhr from './xhr.js';
+import { generateRow } from './table.js';
 
 console.log('client application is running');
 
@@ -61,10 +62,9 @@ async function renderStats() {
     mapStatsElement.innerHTML = '';
 
     stats.maps.forEach(m => {
-        const row = document.createElement('tr');
-        row.setAttribute('class', 'stats-table-row');
-        row.innerHTML = `<td>${m.map}</td><td>${m.recordsCount}</td><td>${m.sessionsCount}</td>`;
-        mapStatsElement.appendChild(row);
+        m.recordsPercent = Math.round(m.recordsCount / stats.allRecordsCount * 100);
+        m.sessionsPercent = Math.round(m.sessionsCount / stats.allSessionsCount * 100);
+        generateRow([m.map, `${m.recordsCount} (${m.recordsPercent}%)`, `${m.sessionsCount} (${m.sessionsPercent}%)`], mapStatsElement);
     });
 }
 
@@ -79,10 +79,7 @@ async function renderRecent() {
     const container = document.getElementById('recentContainer');
     container.innerHTML = '';
     recent.forEach(r => {
-        const row = document.createElement('tr');
-        row.setAttribute('class', 'recent-row');
-        row.innerHTML = `<td>${r.map}</td><td>${r.timestamp.toLocaleString()}</td>`;
-        container.appendChild(row);
+        generateRow([r.map, r.timestamp.toLocaleString()], container);
     });
 }
 
