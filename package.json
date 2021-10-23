@@ -4,7 +4,7 @@
   "description": "A simple tracker for Overwatch maps developed for no reason at all",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node ./server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Moti Granovsky",

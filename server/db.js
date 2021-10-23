@@ -45,14 +45,11 @@ class DB {
 }
 
 async function ensureDbFileExists(dbFilePath) {
-    //console.log('Ensuring DB file exists');
     try {
         await fs.access(dbFilePath);
-        //console.log(`Found DB file at ${dbFilePath}`);
     }
     catch (e) {
         await fs.writeFile(dbFilePath, 'date,map', { encoding: 'utf8' });
-        //console.log(`Created new DB file at ${dbFilePath}`);
     }
 }
 
