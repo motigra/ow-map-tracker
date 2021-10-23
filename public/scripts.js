@@ -16,7 +16,45 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             unlockButtons();
         }
     });
+
+    const statsSwitch = document.getElementById('statsSwitch');
+    statsSwitch.addEventListener('change', async (event) => {
+        if (event.currentTarget.checked) {
+            showOverlay();
+            const stats = await get('/stats');
+            renderStats(stats);
+            statsMode();
+            hideOverlay();
+        }
+        else {
+            showOverlay();
+            logMode();
+            hideOverlay();
+        }
+    });
+
 });
+
+function renderStats(stats) {
+
+    const totalRecordsElement = document.getElementById('totalRecords');
+    const totalSessionsElement = document.getElementById('totalSessions');
+    const totalMapsElement = document.getElementById('totalMaps');
+    const mapStatsElement = document.getElementById('mapStats');
+
+    totalRecordsElement.innerText = stats.allRecordsCount;
+    totalSessionsElement.innerText = stats.allSessionsCount;
+    totalMapsElement.innerText = stats.allMapsCount;
+
+    mapStatsElement.innerHTML = '';
+
+    stats.maps.forEach(m => {
+        const row = document.createElement('tr');
+        row.setAttribute('class', 'stats-table-row');
+        row.innerHTML = `<td>${m.map}</td><td>${m.recordsCount}</td><td>${m.sessionsCount}</td>`;
+        mapStatsElement.appendChild(row);
+    });
+}
 
 async function getRecent() {
     const recent = await get('/records/recent');
@@ -62,6 +100,17 @@ function showStatusError() {
     document.getElementById('status-error').style.display = 'inline-block';
 }
 
+function statsMode() {
+    document.getElementById('buttonsSection').style.display = 'none';
+    document.getElementById('recentSection').style.display = 'none';
+    document.getElementById('statsSection').style.display = 'block';
+}
+
+function logMode() {
+    document.getElementById('buttonsSection').style.display = 'block';
+    document.getElementById('recentSection').style.display = 'block';
+    document.getElementById('statsSection').style.display = 'none';
+}
 
 async function buttonHandler(map) {
     showOverlay();

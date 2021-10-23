@@ -25,6 +25,10 @@
   .section-lock {
     margin-bottom: 0;
   }
+
+  .section.hidden {
+    display:none;
+  }
   
   /* Hero
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -213,10 +217,16 @@ i.icon {
   height: 20px;
   background-repeat: no-repeat;
   background-position: center;
+  vertical-align: middle;
 }
 
 i.icon.lock {
   background-image: url(./img/lock-fill.svg);
+}
+
+i.icon.stats {
+  background-image: url(./img/bar-chart-fill.svg);
+  margin-right: 5px;
 }
 
 i.icon.check {
@@ -256,7 +266,7 @@ i.icon.error {
   height: 20px;
   padding: 3px;
   position: relative;
-  vertical-align: top;
+  vertical-align: middle;
   width: 56px;
 }
 

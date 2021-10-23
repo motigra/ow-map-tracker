@@ -28,20 +28,27 @@
         <div class="container">
             <h3 class="section-heading">Overwatch Map Tracker</h3>
             <p class="section-description">Click on map name to log it!</p>
-            <p class="section-lock">
+            <p class="section-controls">
                 <i class="icon lock"></i>Lock
                 <label class="switch">
                     <input type="checkbox" class="switch-input" id="lockSwitch" >
                     <span class="switch-label" data-on="On" data-off="Off"></span>
                     <span class="switch-handle"></span>
                 </label>
+                &nbsp;&nbsp;&nbsp;
+                <i class="icon stats"></i>Analytics
+                <label class="switch">
+                    <input type="checkbox" class="switch-input" id="statsSwitch" >
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
             </p>
         </div>
     </div>
-    <div class="section buttons">
+    <div class="section buttons" id="buttonsSection">
         <div id="buttonContainer" class="container flex-container"></div>
     </div>
-    <div class="section">
+    <div class="section" id="recentSection">
         <div class="container">
             <h5>Recent Maps:</h5>
             <table class="u-full-width">
@@ -54,6 +61,42 @@
                 <tbody id="recentContainer">
                 </tbody>
               </table>
+        </div>
+    </div>
+    <div class="section hidden" id="statsSection">
+        <div class="container" id="statsContainer">
+
+            <div class="row">
+                <div class="four columns">
+                    <h5>Total Games</h5>
+                    <p id="totalRecords"></p>
+                </div>
+                <div class="four columns">
+                    <h5>Total Sessions</h5>
+                    <p id="totalSessions"></p>
+                </div>
+                <div class="four columns">
+                    <h5>Total Maps</h5>
+                    <p id="totalMaps"></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="twelve column">
+                    <table class="u-full-width">
+                        <thead>
+                          <tr>
+                            <th>Map</th>
+                            <th>Games</th>
+                            <th>Sessions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="mapStats">
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="overlay" id="overlay">
