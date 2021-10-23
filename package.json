@@ -13,5 +13,8 @@
     "express": "^4.17.1",
     "ip": "^1.1.5",
     "qrcode": "^1.4.4"
+  },
+  "devDependencies": {
+    "ansi-regex": ">=5.0.1"
   }
 }
