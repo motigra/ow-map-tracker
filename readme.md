@@ -20,3 +20,14 @@ The UI is a simple web page that can be opened on your mobile device locally, an
 1. Run `npm install`
 1. Run `npm start`
 1. Open the URL or QR code shown in console on your mobile device
+
+## Attributions / Dependencies
+
+ - Base CSS from: normalize.css: [git.io/normalize](https://git.io/normalize)
+ - Base CSS from: Skeleton: [www.getskeleton.com](https://www.getskeleton.com)
+ - SVG Icons from: Bootstrap Icons [icons.getbootstrap.com](https://icons.getbootstrap.com/)
+ - Pure CSS Loaders from: loading.io [loading.io/css/](https://loading.io/css/)
+ - Pure CSS Toggle from: [https://codepen.io/thom-nic/pen/BNLdyY](https://codepen.io/thom-nic/pen/BNLdyY) by [Thom Nichols](https://github.com/thom-nic)
+ - [node-qrcode](https://www.npmjs.com/package/qrcode)
+ - [express](https://www.npmjs.com/package/express)
+ - [ip](https://www.npmjs.com/package/ip)
